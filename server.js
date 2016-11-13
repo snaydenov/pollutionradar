@@ -1,5 +1,4 @@
 var http = require('http');
-var io = require('socket.io');
 var url = require("url");
 var express = require('express');
 var _ = require('underscore');

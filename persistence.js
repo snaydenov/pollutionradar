@@ -33,7 +33,6 @@ exports.getPollutors = function(result){
 
 exports.addMeasurements = function(pollutionData, result){
   //TO DO
-  });
 };
 
 exports.getMeasurementsByPollutorId = function(pollutor_id, result){
