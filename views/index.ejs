@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1 style="float:center">Pollution meter</h1>
+
+<div id="map" style="width:100%;height:500px"></div>
+<script src="/public/jquery-3.1.1.min.js"></script>
+<script>
+
+function myMap() {
+  $.get( "pollutiondata",{pollutorId :1}, function( data ) {
+    renderMap(data);
+  });
+  
+  $.get( "pollutors", function( data ) {
+    console.log(data);
+  });
+  
+  $.post( "addData", function( data ) {
+    console.log(data);
+  });
+}
+
+function renderMap(data) {
+  var mapCanvas = document.getElementById("map");
+  var mapOptions = {
+    center: new google.maps.LatLng(42.696, 23.32601),
+    zoom: 12
+  }
+  var map = new google.maps.Map(mapCanvas, mapOptions);
+  addGrid(map, data);
+  
+}
+
+function addGrid(map, data) {
+
+  for (var i =0;i<50;i++)
+    for (var k =0;k<50;k++) {
+      var north = 42.58 + ((i+1)*0.0050);
+      var  south = 42.58 + (i*0.0050);
+      var  east = 23.18 + ((k+1)*0.0070);
+      var  west = 23.18 + (k*0.0070);
+      var color = '#CCCCCC';
+      for (var pollution in data ) {
+        if(data[pollution].position_lat <= north && data[pollution].position_lat > south
+          && data[pollution].position_long <= east && data[pollution].position_long > west) {
+          if(data[pollution].value > 50) {
+            color = '#FFFF00';
+          }
+          else if(data[pollution].value > 20) {
+            color = '#FF0000';
+          }
+          else {
+            color = '#00FF00';
+          }
+        }
+      }
+      
+      drawRectangle(map,east,west,north,south,color);
+      
+      if(color != '#CCCCCC') {
+      for(var l = -1; l<=1; l++)
+        for(var t = -1; t<=1; t++){
+          drawRectangle(map,east + l*0.0070 ,west + l*0.0070,north + t*0.0050,south + t*0.0050,color);
+        }
+      }
+  };  
+}
+
+
+function drawRectangle(map, x1,x2,y1,y2, color){
+  return new google.maps.Rectangle({
+    strokeColor: color,
+    strokeOpacity: 0.4,
+    strokeWeight: 0.35,
+    fillColor: color,
+    fillOpacity: 0.2,
+    map: map,
+    bounds: {
+      north: y1,
+      south: y2,
+      east: x1,
+      west: x2
+    }
+  });
+}
+
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+
+</body>
+</html>
+
