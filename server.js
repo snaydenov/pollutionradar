@@ -32,11 +32,11 @@ app.get('/pollutiondata', function (req, res) {
   persistence.getMeasurementsByPollutorId(pollutor_id, res);
 });
 
-app.post('/addData', function (req, res) {
-
-  console.log(req);
+app.get('/addData', function (req, res) {
+  persistence.addMeasurement(req.query, res);
+  
   res.json({result: true});
-  console.log('added data');
+  
 });
 
 app.get('/getData', function (req, res) {

@@ -54,7 +54,7 @@ CREATE TABLE `measurements` (
   `position_long` float DEFAULT NULL,
   `value` float DEFAULT NULL,
   PRIMARY KEY (`measurement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +63,7 @@ CREATE TABLE `measurements` (
 
 LOCK TABLES `measurements` WRITE;
 /*!40000 ALTER TABLE `measurements` DISABLE KEYS */;
-INSERT INTO `measurements` VALUES (1,1,1,42.696,23.3261,23),(2,1,1,42.696,23.3362,33),(3,1,1,42.646,23.324,12),(4,1,1,42.706,23.326,55),(5,1,1,42.74,23.37,23),(6,1,1,42.72,23.3312,21),(7,1,1,42.65,23.304,12),(8,1,1,42.66,23.304,12);
+INSERT INTO `measurements` VALUES (1,1,1,42.696,23.3261,23),(2,1,1,42.696,23.3362,33),(3,1,1,42.646,23.324,12),(4,1,1,42.706,23.326,55),(5,1,1,42.74,23.37,23),(6,1,1,42.72,23.3312,21),(7,1,1,42.65,23.304,12),(8,1,1,42.66,23.304,12),(9,1,1,42.667,23.24,13);
 /*!40000 ALTER TABLE `measurements` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,6 +114,101 @@ LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'pollutionradar'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `get_pollutors` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`stoyan`@`%` PROCEDURE `get_pollutors`()
+BEGIN
+  SELECT pollutor_id, name
+  FROM pollutors;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `measurements_add` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`stoyan`@`%` PROCEDURE `measurements_add`(
+device_id INT,
+pollutor NVARCHAR(255),
+position_lat FLOAT,
+position_long FLOAT,
+value FLOAT
+)
+BEGIN
+
+SET @pollutor_id = (SELECT pollutor_id FROM pollutors WHERE name = pollutor);
+
+INSERT INTO measurements
+(
+	device_id
+	,pollutor_id
+	,position_lat
+	,position_long
+	,value
+)
+VALUES
+(
+	device_id
+    ,@pollutor_id
+    ,position_lat
+	,position_long
+    ,value
+);
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `measurements_select_by_pollutor_id` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`stoyan`@`%` PROCEDURE `measurements_select_by_pollutor_id`(IN pollutor_id INT)
+BEGIN
+  SELECT
+	measurement_id,
+    device_id
+    pollutor_id,
+    position_lat,
+    position_long,
+    value
+  FROM measurements M
+  WHERE M.pollutor_id = pollutor_id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -124,4 +219,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-13 22:23:28
+-- Dump completed on 2016-11-15 22:44:05
