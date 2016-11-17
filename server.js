@@ -5,7 +5,7 @@ var _ = require('underscore');
 var app = express();
 
 var persistence = require('./persistence.js');
-
+var model = require('./model.js');
 app.set('view engine', 'ejs');
 app.set('view options', { layout: false });
 app.use(express.methodOverride());
@@ -28,21 +28,22 @@ app.get('/pollutors', function(req,res) {
 });
 
 app.get('/pollutiondata', function (req, res) {
+  
   var pollutor_id = req.query.pollutorId;
   persistence.getMeasurementsByPollutorId(pollutor_id, res);
 });
 
 app.get('/addData', function (req, res) {
+  
   persistence.addMeasurement(req.query, res);
   
   res.json({result: true});
   
 });
 
-app.get('/getData', function (req, res) {
-
-  console.log(req);
-  res.json({result: true});
-  console.log('added data');
+app.get('/bounceData', function (req, res) {
+ 
+  console.log(req.query);
+  res.json({result: req.query});
 });
 
