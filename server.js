@@ -34,8 +34,17 @@ app.get('/pollutiondata', function (req, res) {
 });
 
 app.get('/addData', function (req, res) {
+  var measurement = new model.Measurement();
+  measurement.pos_lat = req.query.lat;
+  measurement.pos_long = req.query.long;
+  measurement.device_id = req.query.device_id;
+  measurement.pollutor = 'CO';
   
-  persistence.addMeasurement(req.query, res);
+  var ch4Calc = new model.PartsCalculator('MQ4');
+  measurement.value = ch4Calc.getPartsPerMillion(req.query.MQ4, req.query.temperature, req.query.humidity, 'CH4');
+  
+  console.log('GOT DATA:', measurement);
+  //persistence.addMeasurement(req.query, res);
   
   res.json({result: true});
   
