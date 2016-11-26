@@ -1,0 +1,42 @@
+.img-o50 {
+    opacity: 0.5;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+.text-reg {
+  font-family: HeaderFont;
+  font-size: 20px;
+ }
+
+.pol-map {
+  margin: 20px 0px 20px 0px;
+  width:100%;
+  height:500px;
+}
+
+.gas-select { 
+  float: left;
+  font-size: 20px;
+}
+
+.text-reg img {
+  height: 20px;
+  width:300px;
+}
+h1 {
+    text-align: center;
+    font-family: HeaderFont;
+}
+
+@font-face {
+    font-family: HeaderFont;
+    src: url('ADAM.CG PRO.otf');
+}
+
+body {
+    background-image: url("seigaiha.png");
+}
+
+html *
+{
+   font-family: HeaderFont;
+}

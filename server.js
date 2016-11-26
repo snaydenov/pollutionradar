@@ -33,12 +33,24 @@ app.get('/pollutiondata', function (req, res) {
   persistence.getMeasurementsByPollutorId(pollutor_id, res);
 });
 
-app.get('/addData', function (req, res) {
+app.get('/bounceData', function (req, res) {
+  //if (req.query.gps_valid == "false") return;
+
+  var battery = new model.Measurement();
+  battery.pos_lat = req.query.lat;
+  battery.pos_long = req.query.long;
+  battery.device_id = req.query.device_id;
+  battery.pollutor = 'Battery';
+  battery.value = req.query.battery;
+  
+  persistence.addMeasurement(battery, res);
+  
   var measurement = new model.Measurement();
   measurement.pos_lat = req.query.lat;
   measurement.pos_long = req.query.long;
   measurement.device_id = req.query.device_id;
-  measurement.pollutor = 'CO';
+  measurement.pollutor = 'CH4';
+ 
   
   var ch4Calc = new model.PartsCalculator('MQ4');
   measurement.value = ch4Calc.getPartsPerMillion(req.query.MQ4, req.query.temperature, req.query.humidity, 'CH4');
@@ -50,7 +62,7 @@ app.get('/addData', function (req, res) {
   
 });
 
-app.get('/bounceData', function (req, res) {
+app.get('/addData', function (req, res) {
  
   console.log(req.query);
   res.json({result: req.query});

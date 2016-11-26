@@ -1,9 +1,11 @@
+var colors = {
+  red : '#FF0000',
+  yellow : '#FFFF00',
+  green : '#00FF00',
+  grey: '#CCCCCC'
+} 
 function myMap() {
   $.get( "pollutiondata",{pollutorId :1}, function( data ) {
-    renderMap(data);
-  });
-  
-  $.get( "addData",{lat:123,long:123,device_id:1,temperature:13,humidity:41,MQ4:123}, function( data ) {
     renderMap(data);
   });
   
@@ -31,37 +33,45 @@ function renderMap(data) {
     zoom: 12
   }
   var map = new google.maps.Map(mapCanvas, mapOptions);
+  map.setMapTypeId('hybrid');
   addGrid(map, data);
   
 }
 
-function addGrid(map, data) {
+function prepareData(data) {
+  var result = [];
+  for(var i = 0; i < 50; i++) {
+    for (var k =0;k<50;k++) {
+    }
+  }
+}
 
+function addGrid(map, data) {
   for (var i =0;i<50;i++)
     for (var k =0;k<50;k++) {
       var north = 42.58 + ((i+1)*0.0050);
       var  south = 42.58 + (i*0.0050);
-      var  east = 23.18 + ((k+1)*0.0070);
-      var  west = 23.18 + (k*0.0070);
-      var color = '#CCCCCC';
+      var  east = 23.16 + ((k+1)*0.0070);
+      var  west = 23.16 + (k*0.0070);
+      var color = colors.grey;
       for (var pollution in data ) {
         if(data[pollution].position_lat <= north && data[pollution].position_lat > south
           && data[pollution].position_long <= east && data[pollution].position_long > west) {
           if(data[pollution].value > 50) {
-            color = '#FFFF00';
+            color = colors.red;
           }
           else if(data[pollution].value > 20) {
-            color = '#FF0000';
+            color = colors.yellow;
           }
           else {
-            color = '#00FF00';
+            color = colors.green;
           }
         }
       }
       
       drawRectangle(map,east,west,north,south,color);
       
-      if(color != '#CCCCCC') {
+      if(color != colors.grey) {
       for(var l = -1; l<=1; l++)
         for(var t = -1; t<=1; t++){
           drawRectangle(map,east + l*0.0070 ,west + l*0.0070,north + t*0.0050,south + t*0.0050,color);

@@ -1,17 +1,24 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <link rel="stylesheet" type="text/css" href="public/styles.css">
+</head>
 <body>
 
-<h1 style="float:center">Pollution meter</h1>
+  <h1>Pollution meter</h1>
 
-<select id="selGases">
-</select>
+  <div id="map" class="pol-map" ></div>
+   <select id="selGases" class="gas-select" >
+  </select>
+  <div style="float:right" class="text-reg ">
+    PPM (less is better):
+    <img class="img-o50" src="/public/pollution-scale.png" alt="Smiley face" height="30">
+  </div>
+  
+  <script src="/public/jquery-3.1.1.min.js"></script>
+  <script src="/public/pollution-radar.js"></script>
 
-<div id="map" style="width:100%;height:500px"></div>
-<script src="/public/jquery-3.1.1.min.js"></script>
-<script src="/public/pollution-radar.js"></script>
-
-<script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
 
 </body>
 </html>

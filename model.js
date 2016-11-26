@@ -56,7 +56,12 @@ exports.intCoef = {
     values: [1.28,1.15,1.095,1.05,1,0.9],
     humidityError: 0.15,
     partsCoeficients: {
-      CH4: [2.,1,-0.55] //position x, position y, slope
+      CH4: [3,0,-0.347],
+      LPG: [3.699,-0.046,-0.263],
+      H2: [3.699,0.342,-0.212],
+      Smoke: [3.301,0.544,-0.185],
+      Alcohol: [2.301,0.602,-0.065],
+      CO: [3,0.58,-0.036]
     }
   }
 }
