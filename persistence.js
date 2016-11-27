@@ -38,8 +38,8 @@ exports.addMeasurement = function(measurement, result){
   
   connection.query("SET @a1 ='" + measurement.device_id + "';");
   connection.query("SET @a2 ='" + measurement.pollutor + "';");
-  connection.query("SET @a3 ='" + measurement.position_lat + "';");
-  connection.query("SET @a4 ='" + measurement.position_long + "';");
+  connection.query("SET @a3 ='" + measurement.pos_lat + "';");
+  connection.query("SET @a4 ='" + measurement.pos_long + "';");
   connection.query("SET @a5 ='" + measurement.value + "';");
   
   connection.query('CALL measurements_add(@a1, @a2, @a3, @a4, @a5);', function(err, rows, fields) {

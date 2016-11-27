@@ -33,6 +33,7 @@ function renderMap(data) {
     zoom: 12
   }
   var map = new google.maps.Map(mapCanvas, mapOptions);
+  centerOnLocation(map);
   map.setMapTypeId('hybrid');
   addGrid(map, data);
   
@@ -47,12 +48,16 @@ function prepareData(data) {
 }
 
 function addGrid(map, data) {
-  for (var i =0;i<50;i++)
-    for (var k =0;k<50;k++) {
-      var north = 42.58 + ((i+1)*0.0050);
-      var  south = 42.58 + (i*0.0050);
-      var  east = 23.16 + ((k+1)*0.0070);
-      var  west = 23.16 + (k*0.0070);
+  var startX = 42.62;
+  var startY = 23.22;
+  var rectHeight = 0.0040;
+  var rectWidth = 0.0056;
+  for (var i =0;i<40;i++)
+    for (var k =0;k<43;k++) {
+      var north = startX + ((i+1)*rectHeight);
+      var  south = startX + (i*rectHeight);
+      var  east = startY + ((k+1)*rectWidth);
+      var  west = startY + (k*rectWidth);
       var color = colors.grey;
       for (var pollution in data ) {
         if(data[pollution].position_lat <= north && data[pollution].position_lat > south
@@ -74,7 +79,7 @@ function addGrid(map, data) {
       if(color != colors.grey) {
       for(var l = -1; l<=1; l++)
         for(var t = -1; t<=1; t++){
-          drawRectangle(map,east + l*0.0070 ,west + l*0.0070,north + t*0.0050,south + t*0.0050,color);
+          drawRectangle(map,east + l*rectWidth ,west + l*rectWidth,north + t*rectHeight,south + t*rectHeight,color);
         }
       }
   };  
@@ -96,4 +101,22 @@ function drawRectangle(map, x1,x2,y1,y2, color){
       west: x2
     }
   });
+}
+
+function centerOnLocation(map) {
+  // Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      var infoWindow = new google.maps.Marker({map: map});
+      infoWindow.setPosition(pos);
+      console.log("setting to current location");
+      map.setCenter(pos);
+    }, function() {
+      console.log("error getting location");
+    });  
+  }
 }
