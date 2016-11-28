@@ -53,8 +53,9 @@ CREATE TABLE `measurements` (
   `position_lat` float DEFAULT NULL,
   `position_long` float DEFAULT NULL,
   `value` float DEFAULT NULL,
+  `dateAdded` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`measurement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +64,7 @@ CREATE TABLE `measurements` (
 
 LOCK TABLES `measurements` WRITE;
 /*!40000 ALTER TABLE `measurements` DISABLE KEYS */;
-INSERT INTO `measurements` VALUES (1,1,1,42.696,23.3261,23),(2,1,1,42.696,23.3362,33),(3,1,1,42.646,23.324,12),(4,1,1,42.706,23.326,55),(5,1,1,42.74,23.37,23),(6,1,1,42.72,23.3312,21),(7,1,1,42.65,23.304,12),(8,1,1,42.66,23.304,12),(9,1,1,42.667,23.24,13);
+INSERT INTO `measurements` VALUES (1,1,1,42.696,23.3261,23,'2016-11-21 17:49:31'),(2,1,1,42.696,23.3362,33,'2016-11-21 17:49:31'),(3,1,1,42.646,23.324,12,'2016-11-21 17:49:31'),(4,1,1,42.706,23.326,55,'2016-11-21 17:49:31'),(5,1,1,42.74,23.37,23,'2016-11-21 17:49:31'),(6,1,1,42.72,23.3312,21,'2016-11-21 17:49:31'),(7,1,1,42.65,23.304,12,'2016-11-21 17:49:31'),(8,1,1,42.66,23.304,12,'2016-11-21 17:49:31'),(9,1,1,42.667,23.24,13,'2016-11-21 17:49:31'),(10,1,2,42.667,23.24,44,'2016-11-27 12:32:09'),(11,1,2,42.687,23.36,54,'2016-11-27 12:33:07'),(13,1,2,42.697,23.3,44,'2016-11-27 12:36:42'),(14,1,2,42.652,23.32,12,'2016-11-27 12:37:20'),(15,1,2,42.682,23.31,33,'2016-11-27 12:38:26'),(16,1,2,42.7,22.95,60,'2016-11-27 12:39:01'),(17,2,2,42.69,23.32,44,'2016-11-27 12:40:13'),(18,1,1,23.1231,42.123,230,'2016-11-27 12:40:16'),(19,1,1,23.1231,42.123,230,'2016-11-27 12:40:40'),(20,1,2,23.1231,42.123,230,'2016-11-27 12:40:40');
 /*!40000 ALTER TABLE `measurements` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -77,6 +78,8 @@ DROP TABLE IF EXISTS `pollutors`;
 CREATE TABLE `pollutors` (
   `pollutor_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(200) DEFAULT NULL,
+  `medium_val` int(11) DEFAULT NULL,
+  `high_val` int(11) DEFAULT NULL,
   PRIMARY KEY (`pollutor_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -87,8 +90,33 @@ CREATE TABLE `pollutors` (
 
 LOCK TABLES `pollutors` WRITE;
 /*!40000 ALTER TABLE `pollutors` DISABLE KEYS */;
-INSERT INTO `pollutors` VALUES (1,'CO2'),(2,'CO'),(3,'CH4'),(4,'C2H5OH'),(5,'Butane'),(6,'LPG'),(7,'Smoke'),(8,'Humidity'),(9,'Temperature'),(10,'Altitude'),(11,'Pressure');
+INSERT INTO `pollutors` VALUES (1,'CO2',20,50),(2,'CO',NULL,NULL),(3,'CH4',NULL,NULL),(4,'C2H5OH',NULL,NULL),(5,'Butane',NULL,NULL),(6,'LPG',NULL,NULL),(7,'Smoke',NULL,NULL),(8,'Humidity',NULL,NULL),(9,'Temperature',NULL,NULL),(10,'Altitude',NULL,NULL),(11,'Pressure',NULL,NULL);
 /*!40000 ALTER TABLE `pollutors` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `thresholds`
+--
+
+DROP TABLE IF EXISTS `thresholds`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `thresholds` (
+  `threshold_id` int(11) NOT NULL AUTO_INCREMENT,
+  `pollutor_id` int(11) DEFAULT NULL,
+  `medium` int(11) DEFAULT NULL,
+  `high` int(11) DEFAULT NULL,
+  PRIMARY KEY (`threshold_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `thresholds`
+--
+
+LOCK TABLES `thresholds` WRITE;
+/*!40000 ALTER TABLE `thresholds` DISABLE KEYS */;
+/*!40000 ALTER TABLE `thresholds` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -130,7 +158,7 @@ UNLOCK TABLES;
 DELIMITER ;;
 CREATE DEFINER=`stoyan`@`%` PROCEDURE `get_pollutors`()
 BEGIN
-  SELECT pollutor_id, name
+  SELECT pollutor_id, name, medium_val, high_val
   FROM pollutors;
 END ;;
 DELIMITER ;
@@ -219,4 +247,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-15 22:44:05
+-- Dump completed on 2016-11-28 23:39:21
