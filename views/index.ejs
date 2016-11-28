@@ -8,16 +8,46 @@
   <h1>POLLUTION METER</h1>
 
   <div id="map" class="pol-map" ></div>
-   <select id="selGases" class="gas-select" >
+  
+  <div style="width: 100%;">
+ <div style="float: left; width:25%;">
+ <select id="selGases" class="gas-select" >
   </select>
-  <div style="float:right" class="text-reg ">
+  </div>
+ <div style="float: left; width:45%;">
+ <div class="slider-container ">
+    <div class="range">
+      <input id="dateSelect" type="range" min="1" max="7" steps="1" value="1">
+    </div>
+
+    <ul class="range-labels">
+      <li >6 days ago</li>
+      <li>5 days ago</li>
+      <li>4 days ago</li>
+      <li>3 days ago</li>
+      <li>2 days ago</li>
+      <li>Yesterday</li>
+      <li id="lastId" class="active selected">Today</li>
+      
+    </ul>
+  </div>
+  </div>
+ <div style="float: left; width:30%;">
+ <div class="text-reg ">
     PPM (less is better):
     <img class="img-o50" src="/public/pollution-scale.png" alt="Smiley face" height="30">
   </div>
+  </div>
+ <br style="clear: left;" />
+</div>
+  
+  
+  
+  
   
   <script src="/public/jquery-3.1.1.min.js"></script>
   <script src="/public/pollution-radar.js"></script>
-
+  <script src="/public/slider.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
 
 </body>
