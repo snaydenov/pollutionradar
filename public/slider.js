@@ -38,4 +38,3 @@ $('.range-labels li').on('click', function () {
   
 });
 
-$('#lastId').click();
