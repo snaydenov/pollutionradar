@@ -5,7 +5,7 @@ var colors = {
   grey: '#CCCCCC'
 } 
 function myMap() {
-  $.get( "pollutiondata",{pollutorId :1}, function( data ) {
+  $.get( "pollutiondata",{pollutorId :1,dayOffset:0}, function( data ) {
     renderMap(data);
   });
   
@@ -17,7 +17,7 @@ function myMap() {
     });
     
     options.change(function() {
-      $.get( "pollutiondata",{pollutorId :$(this).val()}, function( data ) {
+      $.get( "pollutiondata",{pollutorId :$(this).val(), dayOffset: 7 - $("#selValue").val()}, function( data ) {
         renderMap(data);
       });
     });

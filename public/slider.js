@@ -36,5 +36,15 @@ $('.range-labels li').on('click', function () {
   
   $rangeInput.val(index + 1).trigger('input');
   
+  $("#selValue").val(index + 1);
+  var pollutor = $("#selGases").val();
+  if(!pollutor) pollutor = 1;
+  $.get( "pollutiondata",{pollutorId : pollutor,  dayOffset: 5 - index + 1}, function( data ) {
+    renderMap(data);
+  });
 });
+
+$("#lastId").click();
+
+
 

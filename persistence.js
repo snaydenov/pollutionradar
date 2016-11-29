@@ -49,9 +49,10 @@ exports.addMeasurement = function(measurement, result){
   
 };
 
-exports.getMeasurementsByPollutorId = function(pollutor_id, result){
+exports.getMeasurementsByPollutorId = function(pollutor_id, dateOffset, result){
   connection.query("SET @a1 ='" + pollutor_id + "';");
-  connection.query('CALL measurements_select_by_pollutor_id(@a1);', function(err, rows, fields) {
+  connection.query("SET @a2 ='" + dateOffset + "';");
+  connection.query('CALL measurements_select_by_pollutor_id(@a1, @a2);', function(err, rows, fields) {
     if (err) throw err;  
     console.log('got_measurements', rows[0]);
     result.json(rows[0]);

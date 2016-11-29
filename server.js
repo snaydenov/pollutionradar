@@ -30,7 +30,8 @@ app.get('/pollutors', function(req,res) {
 app.get('/pollutiondata', function (req, res) {
   
   var pollutor_id = req.query.pollutorId;
-  persistence.getMeasurementsByPollutorId(pollutor_id, res);
+  var day_offset = req.query.dayOffset;
+  persistence.getMeasurementsByPollutorId(pollutor_id, day_offset , res);
 });
 
  
